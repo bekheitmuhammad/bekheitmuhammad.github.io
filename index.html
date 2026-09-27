@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mohammed Bekheit – AI, Embedded Systems & IoT Engineer</title>
+<meta name="description" content="Portfolio of Mohammed Bekheit, a computer engineer building intelligent systems across AI, embedded hardware, IoT and .NET.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+  // Saved theme + language applied before first paint. Dark is the default look.
+  (function () {
+    try {
+      var d = document.documentElement;
+      var t = localStorage.getItem('theme');
+      var l = localStorage.getItem('lang');
+      d.setAttribute('data-theme', t === 'light' ? 'light' : 'dark');
+      if (l === 'ar') { d.lang = 'ar'; d.dir = 'rtl'; }
+    } catch (e) { document.documentElement.setAttribute('data-theme', 'dark'); }
+  })();
+</script>
+<script src="content.js"></script>
+<style>
+  :root {
+    --bg: #f2f5fb;
+    --panel: rgba(255, 255, 255, .8);
+    --border: rgba(15, 23, 42, .11);
+    --text: #0f172a;
+    --muted: #52607a;
+    --cyan: #0891b2;
+    --blue: #2563eb;
+    --purple: #6d28d9;
+    --magenta: #c026d3;
+    --green: #15803d;
+    --btn-a: #0e7490;
+    --btn-b: #1d4ed8;
+    --on-btn: #ffffff;
+    --grid: rgba(15, 23, 42, .05);
+    --chip: rgba(15, 23, 42, .05);
+    --sans: "Cairo", system-ui, -apple-system, "Segoe UI", Tahoma, sans-serif;
+    --mono: "Fira Code", ui-monospace, "SF Mono", Menlo, Consolas, "Cairo", monospace;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #080d1a; --panel: rgba(15, 23, 42, .72); --border: rgba(255, 255, 255, .09);
+      --text: #f1f5f9; --muted: #94a3b8; --cyan: #00f2fe; --blue: #4facfe;
+      --purple: #a855f7; --magenta: #e040fb; --green: #4ade80;
+      --btn-a: #00f2fe; --btn-b: #4facfe; --on-btn: #04121f;
+      --grid: rgba(255, 255, 255, .03); --chip: rgba(255, 255, 255, .05);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #080d1a; --panel: rgba(15, 23, 42, .72); --border: rgba(255, 255, 255, .09);
+    --text: #f1f5f9; --muted: #94a3b8; --cyan: #00f2fe; --blue: #4facfe;
+    --purple: #a855f7; --magenta: #e040fb; --green: #4ade80;
+    --btn-a: #00f2fe; --btn-b: #4facfe; --on-btn: #04121f;
+    --grid: rgba(255, 255, 255, .03); --chip: rgba(255, 255, 255, .05);
+    color-scheme: dark;
+  }
+
+  /* Language switching: every translatable string exists twice */
+  html[lang="en"] [data-l="ar"], html[lang="ar"] [data-l="en"] { display: none !important; }
+  [data-l="ar"] { letter-spacing: 0; }
+  [hidden] { display: none !important; }
+
+  html { scroll-behavior: smooth; scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 92px); }
+  *, *::before, *::after { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: var(--sans); font-size: 17px; line-height: 1.75;
+    -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    transition: background-color .3s, color .3s;
+  }
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(600px 400px at 90% 0%, color-mix(in srgb, var(--purple) 16%, transparent), transparent 70%),
+      radial-gradient(600px 420px at 0% 100%, color-mix(in srgb, var(--cyan) 12%, transparent), transparent 70%);
+  }
+  body::after {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-size: 40px 40px;
+    background-image: linear-gradient(to right, var(--grid) 1px, transparent 1px), linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  }
+  #bgCanvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: .4; }
+  header.site, main, footer.site { position: relative; z-index: 1; }
+  a { color: inherit; }
+  img { max-width: 100%; height: auto; display: block; }
+  :focus-visible { outline: 2px solid var(--cyan); outline-offset: 3px; border-radius: 6px; }
+  .ic { width: 1.15em; height: 1.15em; flex: none; }
+  .mono { font-family: var(--mono); }
+  .wrap { width: 100%; max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+
+  .glass {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 18px;
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .hover { transition: border-color .25s, box-shadow .25s, transform .25s; }
+  .hover:hover {
+    border-color: color-mix(in srgb, var(--cyan) 50%, transparent);
+    box-shadow: 0 12px 34px -14px color-mix(in srgb, var(--cyan) 45%, transparent);
+    transform: translateY(-3px);
+  }
+  .grad {
+    background: linear-gradient(135deg, var(--cyan) 0%, var(--blue) 50%, var(--magenta) 100%);
+    -webkit-background-clip: text; background-clip: text; color: transparent; -webkit-text-fill-color: transparent;
+  }
+
+  /* Header */
+  header.site { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 10px); z-index: 20; padding: 0 16px; }
+  .nav {
+    max-width: 1120px; margin: 0 auto; padding: 10px 18px; border-radius: 16px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    box-shadow: 0 16px 40px -20px rgba(0, 0, 0, .5);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; min-width: 0; }
+  .logo {
+    width: 40px; height: 40px; border-radius: 12px; flex: none; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--cyan), var(--purple));
+    font: 700 .95rem var(--mono); color: #fff; direction: ltr;
+    box-shadow: 0 0 18px color-mix(in srgb, var(--cyan) 40%, transparent);
+  }
+  .brand b { display: block; font-weight: 800; line-height: 1.2; white-space: nowrap; }
+  .brand small { display: block; font: 500 .66rem var(--mono); letter-spacing: .14em; color: var(--cyan); }
+  .links { display: flex; align-items: center; gap: 26px; list-style: none; margin: 0; padding: 0; }
+  .links a { color: var(--muted); text-decoration: none; font-size: .93rem; font-weight: 600; transition: color .15s; }
+  .links a:hover { color: var(--cyan); }
+  .ctls { display: flex; align-items: center; gap: 8px; }
+  .ctl {
+    height: 38px; min-width: 38px; padding: 0 11px; display: inline-grid; place-items: center;
+    background: var(--chip); color: var(--text); font: 700 .85rem var(--sans);
+    border: 1px solid var(--border); border-radius: 11px; cursor: pointer; transition: border-color .15s, color .15s;
+  }
+  .ctl:hover { border-color: var(--cyan); color: var(--cyan); }
+  .ctl.sq { padding: 0; width: 38px; }
+  .ctl .ic { width: 18px; height: 18px; }
+  .ctl .sun { display: none; }
+  :root[data-theme="dark"] .ctl .sun { display: block; }
+  :root[data-theme="dark"] .ctl .moon { display: none; }
+  #menuBtn { display: none; }
+  .drawer { display: none; max-width: 1120px; margin: 8px auto 0; padding: 12px; text-align: center; }
+  .drawer a { display: block; padding: 10px; text-decoration: none; font-weight: 700; color: var(--muted); border-bottom: 1px solid var(--border); }
+  .drawer a:last-child { border-bottom: 0; color: var(--cyan); }
+  .drawer.open { display: block; }
+  @media (max-width: 900px) {
+    .links { display: none; }
+    #menuBtn { display: inline-grid; }
+  }
+  @media (max-width: 420px) { .brand small { display: none; } }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex; align-items: center; gap: 10px; padding: 12px 24px;
+    font: 800 .98rem var(--sans); text-decoration: none; border-radius: 13px; cursor: pointer;
+    border: 1px solid var(--border); color: var(--text); background: var(--panel);
+    transition: transform .2s, border-color .2s, box-shadow .2s;
+  }
+  .btn:hover { transform: translateY(-2px); border-color: var(--cyan); }
+  .btn.primary {
+    border-color: transparent; color: var(--on-btn);
+    background: linear-gradient(135deg, var(--btn-a), var(--btn-b));
+    box-shadow: 0 8px 26px -8px color-mix(in srgb, var(--cyan) 60%, transparent);
+  }
+  .btn.primary:hover { box-shadow: 0 12px 30px -8px color-mix(in srgb, var(--cyan) 75%, transparent); }
+
+  /* Hero */
+  .hero { padding: 64px 0 88px; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 56px; align-items: center; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 10px; padding: 5px 15px; margin-bottom: 22px;
+    border-radius: 999px; font-size: .86rem; font-weight: 600;
+    border: 1px solid color-mix(in srgb, var(--green) 45%, transparent);
+    background: color-mix(in srgb, var(--green) 12%, transparent);
+  }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--green); animation: ping 2s ease-out infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--green) 70%, transparent); } 100% { box-shadow: 0 0 0 10px transparent; } }
+  .hero h1 { margin: 0 0 20px; font-size: clamp(2.1rem, 5vw, 3.6rem); font-weight: 900; line-height: 1.25; letter-spacing: -0.02em; }
+  .hero h1 .typed-line { display: block; min-height: 1.25em; }
+  .cursor { display: inline-block; width: 3px; height: .85em; background: var(--cyan); margin-inline-start: 4px; vertical-align: -0.08em; animation: blink 1s steps(1) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .lead { color: var(--muted); font-size: 1.1rem; max-width: 52ch; margin: 0 0 28px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 30px; }
+  .specs { display: flex; flex-wrap: wrap; gap: 10px; }
+  .spec {
+    display: inline-flex; align-items: center; gap: 8px; padding: 6px 13px; border-radius: 10px;
+    font: 500 .8rem var(--mono); color: var(--muted); border: 1px solid var(--border); background: var(--chip); direction: ltr;
+  }
+  .spec .ic { color: var(--cyan); }
+
+  .profile { position: relative; isolation: isolate; max-width: 390px; margin-inline: auto; padding: 14px; border-radius: 24px; }
+  .profile .glow {
+    position: absolute; inset: -34px; z-index: -1; filter: blur(34px); animation: pulseGlow 4s ease-in-out infinite;
+    background:
+      radial-gradient(circle at 25% 20%, color-mix(in srgb, var(--cyan) 32%, transparent), transparent 55%),
+      radial-gradient(circle at 78% 82%, color-mix(in srgb, var(--purple) 36%, transparent), transparent 55%);
+  }
+  @keyframes pulseGlow { 0%, 100% { opacity: .45; } 50% { opacity: .9; } }
+  .chipbar { display: flex; justify-content: space-between; align-items: center; padding: 0 6px 12px; font: 500 .7rem var(--mono); color: var(--muted); direction: ltr; }
+  .chipbar i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-inline-end: 6px; background: var(--border); }
+  .chipbar i:nth-child(1) { background: #f87171; } .chipbar i:nth-child(2) { background: #fbbf24; } .chipbar i:nth-child(3) { background: #4ade80; }
+  .photo { position: relative; padding: 2px; border-radius: 18px; background: linear-gradient(135deg, var(--cyan), var(--purple)); }
+  .photo img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; filter: grayscale(1) contrast(1.05); }
+  .photo .overlay {
+    position: absolute; left: 12px; right: 12px; bottom: 12px; padding: 9px 12px; border-radius: 11px; direction: ltr;
+    display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; font: 500 .7rem var(--mono); color: #cbd5e1;
+    background: rgba(8, 13, 26, .78); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  }
+  .overlay .on { color: #4ade80; }
+  .float {
+    position: absolute; padding: 7px 13px; border-radius: 12px; font: 500 .76rem var(--mono); direction: ltr;
+    display: inline-flex; align-items: center; gap: 7px; animation: float 5s ease-in-out infinite;
+    background: var(--panel); border: 1px solid var(--border); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    box-shadow: 0 10px 28px -12px color-mix(in srgb, var(--cyan) 50%, transparent);
+  }
+  .float .ic { color: var(--cyan); }
+  .float.f1 { top: 34px; inset-inline-end: -14px; }
+  .float.f2 { bottom: 84px; inset-inline-start: -16px; animation-delay: 1.6s; animation-duration: 6s; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-11px); } }
+  @media (max-width: 860px) {
+    .hero { padding: 40px 0 64px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+    .float.f1 { inset-inline-end: -4px; } .float.f2 { inset-inline-start: -4px; }
+  }
+
+  /* Sections */
+  section.block { padding: 88px 0; }
+  .sec-head { text-align: center; margin-bottom: 44px; }
+  .sec-label { display: block; font: 500 .85rem var(--mono); color: var(--cyan); }
+  html[lang="ar"] .sec-label { font-family: var(--sans); font-weight: 700; }
+  .sec-head h2 { margin: 4px 0 8px; font-size: clamp(1.7rem, 3.6vw, 2.5rem); font-weight: 900; line-height: 1.3; letter-spacing: -0.01em; }
+  .sec-head p { margin: 0 auto; max-width: 58ch; color: var(--muted); }
+  h3, h4 { line-height: 1.4; }
+
+  /* Tags */
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; direction: ltr; }
+  html[lang="ar"] .tags { justify-content: flex-end; }
+  .tag { font: 500 .76rem var(--mono); padding: 3px 11px; border-radius: 8px; color: var(--muted); border: 1px solid var(--border); background: var(--chip); }
+  .tag.hl { color: var(--cyan); border-color: color-mix(in srgb, var(--cyan) 40%, transparent); background: color-mix(in srgb, var(--cyan) 10%, transparent); }
+
+  /* Terminal (always dark, always left-to-right) */
+  .term {
+    max-width: 860px; margin: 0 auto; border-radius: 18px; overflow: hidden; direction: ltr; text-align: left;
+    background: #0a0f1e; border: 1px solid rgba(255, 255, 255, .1); color: #cbd5e1;
+    box-shadow: 0 24px 60px -24px rgba(0, 242, 254, .3); font-family: var(--mono);
+  }
+  .term-top { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; padding: 10px 16px; background: rgba(255, 255, 255, .04); border-bottom: 1px solid rgba(255, 255, 255, .08); font-size: .76rem; color: #94a3b8; }
+  .term-top .l { display: flex; align-items: center; gap: 6px; }
+  .term-top .l i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+  .term-top .l i:nth-child(1) { background: #f87171; } .term-top .l i:nth-child(2) { background: #fbbf24; } .term-top .l i:nth-child(3) { background: #4ade80; }
+  .term-top .l span { margin-left: 8px; }
+  .term-btns { display: flex; flex-wrap: wrap; gap: 6px; }
+  .term-btns button { font: 500 .74rem var(--mono); background: transparent; color: #7dd3fc; border: 1px solid rgba(255, 255, 255, .14); border-radius: 8px; padding: 3px 10px; cursor: pointer; transition: background .15s, border-color .15s; }
+  .term-btns button:hover { background: rgba(0, 242, 254, .1); border-color: #00f2fe; }
+  .term-out { height: 330px; overflow-y: auto; padding: 16px 18px; font-size: .84rem; line-height: 1.75; }
+  .term-out .line { white-space: pre-wrap; word-break: break-word; min-height: 1.75em; }
+  .term-out .cmd { color: #e2e8f0; margin-top: 8px; }
+  .term-out .cmd b { color: #00f2fe; font-weight: 500; }
+  .term-out .hl { color: #00f2fe; } .term-out .ok { color: #4ade80; } .term-out .dim { color: #64748b; } .term-out .warn { color: #fbbf24; }
+  .term-out a { color: #4facfe; }
+  .term-in { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-top: 1px solid rgba(255, 255, 255, .08); }
+  .term-in:focus-within { box-shadow: inset 0 0 0 1px rgba(0, 242, 254, .55); }
+  .term-in .pr { color: #00f2fe; font-size: .84rem; white-space: nowrap; }
+  .term-in input { flex: 1; min-width: 0; background: transparent; border: 0; outline: 0; color: #e2e8f0; font: 500 .9rem var(--mono); }
+  .term-in input::placeholder { color: #475569; }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: start; }
+  .about-text { display: grid; gap: 16px; color: var(--muted); }
+  .about-text p { margin: 0; }
+  .about-text h2 { margin: 0 0 4px; color: var(--text); font-size: clamp(1.6rem, 3.2vw, 2.2rem); font-weight: 900; line-height: 1.35; }
+  .facts { display: grid; grid-template-columns: 150px 1fr; gap: 14px 22px; margin: 0; }
+  .facts dt { font-weight: 800; font-size: .92rem; }
+  .facts dd { margin: 0; color: var(--muted); }
+  .facts a { text-decoration: none; border-bottom: 1px solid var(--border); transition: color .15s, border-color .15s; }
+  .facts a:hover { color: var(--cyan); border-color: var(--cyan); }
+  .ltr { direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .panel-pad { padding: 26px; }
+  .panel-pad .facts { grid-template-columns: 110px 1fr; }
+  @media (max-width: 860px) { .about-grid { grid-template-columns: 1fr; gap: 32px; } }
+  @media (max-width: 560px) { .facts, .panel-pad .facts { grid-template-columns: 1fr; gap: 2px; } .facts dd { margin-bottom: 14px; } }
+
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 56px; }
+  .pillar { padding: 26px; }
+  .ico { width: 48px; height: 48px; border-radius: 14px; display: grid; place-items: center; margin-bottom: 16px; color: var(--cyan); background: color-mix(in srgb, var(--cyan) 12%, transparent); border: 1px solid color-mix(in srgb, var(--cyan) 30%, transparent); }
+  .ico .ic { width: 24px; height: 24px; }
+  .pillar h3 { margin: 0 0 8px; font-size: 1.12rem; font-weight: 800; }
+  .pillar p { margin: 0 0 16px; color: var(--muted); font-size: .95rem; }
+  @media (max-width: 860px) { .pillars { grid-template-columns: 1fr; } }
+
+  .quote {
+    margin: 56px 0 0; padding: 6px 0; padding-inline-start: 22px; border-inline-start: 3px solid var(--cyan);
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem); font-weight: 700; line-height: 1.6; max-width: 36em;
+  }
+  .principles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 36px; }
+  .principles h3 { margin: 0 0 6px; font-size: 1rem; font-weight: 800; color: var(--cyan); }
+  .principles p { margin: 0; color: var(--muted); font-size: .94rem; }
+  @media (max-width: 860px) { .principles { grid-template-columns: 1fr; gap: 20px; } }
+
+  /* Skills tabs */
+  .tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; }
+  .tab {
+    display: inline-flex; align-items: center; gap: 9px; padding: 10px 20px; border-radius: 13px; cursor: pointer;
+    font: 700 .92rem var(--sans); color: var(--muted); background: var(--panel); border: 1px solid var(--border);
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); transition: color .2s, border-color .2s, background .2s;
+  }
+  .tab:hover { color: var(--text); border-color: color-mix(in srgb, var(--cyan) 50%, transparent); }
+  .tab[aria-selected="true"] { color: var(--on-btn); border-color: transparent; background: linear-gradient(135deg, var(--btn-a), var(--btn-b)); }
+  .skill-panel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .skill-card { padding: 24px; }
+  .skill-card h3 { margin: 0 0 14px; font-size: 1rem; font-weight: 800; }
+  @media (max-width: 860px) { .skill-panel { grid-template-columns: 1fr; } }
+
+  /* Projects */
+  .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; }
+  .filters button {
+    padding: 7px 18px; border-radius: 999px; cursor: pointer; font: 700 .85rem var(--sans);
+    color: var(--muted); background: var(--panel); border: 1px solid var(--border); transition: color .2s, border-color .2s;
+  }
+  .filters button:hover { color: var(--text); border-color: var(--cyan); }
+  .filters button[aria-pressed="true"] { color: var(--cyan); border-color: var(--cyan); background: color-mix(in srgb, var(--cyan) 10%, transparent); }
+  .grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
+  .card { padding: 26px; display: flex; flex-direction: column; }
+  .card.feature { grid-column: 1 / -1; }
+  .card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .card-top .ico { margin: 0; }
+  .card h3 { margin: 0; font-size: 1.25rem; font-weight: 800; }
+  .kind { font: 500 .78rem var(--mono); color: var(--cyan); margin: 2px 0 8px; }
+  html[lang="ar"] .kind { font-family: var(--sans); font-weight: 700; font-size: .88rem; }
+  .card p { margin: 0 0 14px; color: var(--muted); font-size: .96rem; }
+  .card .role { font-size: .88rem; color: var(--muted); margin-bottom: 14px; }
+  .card .role b { color: var(--text); }
+  .card .tags { margin-top: auto; }
+  .card .more { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; font-weight: 800; font-size: .92rem; color: var(--cyan); text-decoration: none; }
+  .card .more:hover { text-decoration: underline; }
+  .status { display: inline-flex; align-items: center; gap: 7px; font: 700 .76rem var(--sans); padding: 3px 11px; border-radius: 999px; border: 1px solid var(--border); background: var(--chip); white-space: nowrap; }
+  .status::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
+  .status.wip::before { background: var(--purple); }
+  .road { margin: 0 0 14px; padding-inline-start: 20px; color: var(--muted); font-size: .88rem; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+
+  /* Case study */
+  .intro { max-width: 64ch; color: var(--muted); margin: 0 0 30px; font-size: 1.05rem; }
+  .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-bottom: 36px; }
+  .stat { padding: 24px; }
+  .stat b { display: block; font-size: 2.5rem; font-weight: 900; line-height: 1.15; }
+  .stat span { display: block; color: var(--muted); font-size: .9rem; margin-top: 4px; }
+  @media (max-width: 760px) { .stats { grid-template-columns: 1fr; } }
+  .sub { margin: 50px 0 18px; font-size: 1.25rem; font-weight: 800; }
+  figure.diagram { margin: 0 0 26px; padding: 10px; }
+  figure.diagram img { width: 100%; border-radius: 12px; }
+  figure.diagram figcaption { margin: 10px 6px 2px; color: var(--muted); font-size: .88rem; }
+  .layers { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .layer { padding: 20px 22px; border-inline-start: 3px solid var(--cyan); }
+  .layer h4 { margin: 0 0 4px; font-size: 1rem; font-weight: 800; }
+  .layer p { margin: 0; color: var(--muted); font-size: .94rem; }
+  @media (max-width: 760px) { .layers { grid-template-columns: 1fr; } }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: .95rem; min-width: 460px; }
+  th, td { padding: 14px 20px; text-align: start; border-bottom: 1px solid var(--border); }
+  tr:last-child td { border-bottom: 0; }
+  th { font-weight: 800; font-size: .86rem; color: var(--muted); background: var(--chip); }
+  td.num { font: 500 .92rem var(--mono); direction: ltr; text-align: start; }
+  td.best { color: var(--cyan); font-weight: 700; }
+  .note { color: var(--muted); font-size: .88rem; margin: 12px 0 0; }
+  .decisions { margin: 0; padding-inline-start: 20px; color: var(--muted); display: grid; gap: 10px; max-width: 68ch; }
+  .decisions li::marker { color: var(--cyan); }
+  .case-facts { padding: 26px; margin-bottom: 8px; }
+
+  /* Background */
+  .bg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: start; }
+  .bg-grid .glass { padding: 30px; }
+  .bg-grid h3.col { margin: 0 0 22px; font-size: 1.2rem; font-weight: 800; }
+  .edu .yrs { font: 500 .8rem var(--mono); color: var(--cyan); }
+  .edu h4 { margin: 2px 0 0; font-size: 1.05rem; font-weight: 800; }
+  .edu .org { margin: 2px 0 6px; color: var(--muted); font-size: .95rem; }
+  .edu p.small { margin: 8px 0 0; color: var(--muted); font-size: .92rem; }
+  .certs { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 14px; }
+  .certs li { border-top: 1px solid var(--border); padding-top: 14px; }
+  .certs b { display: block; font-size: .98rem; font-weight: 800; }
+  .certs .d { color: var(--muted); font-size: .9rem; }
+  .timeline { list-style: none; margin: 0; padding: 0; padding-inline-start: 24px; border-inline-start: 1px solid var(--border); display: grid; gap: 28px; }
+  .job { position: relative; }
+  .job::before { content: ""; position: absolute; inset-inline-start: -30px; top: 9px; width: 11px; height: 11px; border-radius: 50%; background: var(--bg); border: 2px solid var(--cyan); box-shadow: 0 0 10px color-mix(in srgb, var(--cyan) 60%, transparent); }
+  .job .when { font: 500 .8rem var(--mono); color: var(--cyan); }
+  html[lang="ar"] .job .when { font-family: var(--sans); font-weight: 700; font-size: .9rem; }
+  .job h4 { margin: 2px 0 4px; font-size: 1.05rem; font-weight: 800; }
+  .job p { margin: 0; color: var(--muted); font-size: .94rem; max-width: 46ch; }
+  @media (max-width: 860px) { .bg-grid { grid-template-columns: 1fr; } }
+
+  /* Contact */
+  .contact-card { padding: 44px 36px; text-align: center; border-radius: 26px; position: relative; overflow: hidden; }
+  .contact-card::before { content: ""; position: absolute; inset: 0; z-index: -1; background: radial-gradient(500px 260px at 50% 0%, color-mix(in srgb, var(--cyan) 14%, transparent), transparent 70%); }
+  .contact-card .lead { margin: 0 auto 26px; }
+  .mailrow { display: inline-flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: center; margin-bottom: 34px; }
+  .mail { font: 500 clamp(1.05rem, 3.4vw, 1.6rem) var(--mono); text-decoration: none; padding: 10px 20px; border-radius: 14px; border: 1px solid color-mix(in srgb, var(--cyan) 45%, transparent); background: color-mix(in srgb, var(--cyan) 8%, transparent); word-break: break-all; direction: ltr; transition: border-color .2s; }
+  .mail:hover { border-color: var(--cyan); }
+  .copy { display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 16px; }
+  .tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; text-align: start; }
+  .tile { padding: 18px 20px; display: flex; gap: 14px; align-items: center; text-decoration: none; min-width: 0; }
+  .tile .ico { margin: 0; width: 42px; height: 42px; border-radius: 12px; }
+  .tile small { display: block; font-size: .78rem; color: var(--muted); line-height: 1.3; }
+  .tile b { display: block; font-size: .92rem; font-weight: 700; overflow-wrap: anywhere; line-height: 1.4; }
+  @media (max-width: 960px) { .tiles { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .tiles { grid-template-columns: 1fr; } .contact-card { padding: 32px 20px; } }
+
+  footer.site { padding: 26px 0 40px; border-top: 1px solid var(--border); font-size: .86rem; color: var(--muted); }
+  footer.site .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+  footer.site .q { font-style: italic; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .float, .glow, .dot, .cursor { animation: none; }
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><polyline points="22,6 12,13 2,6"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></symbol>
+    <symbol id="i-linkedin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 1v3M15 1v3M9 20v3M15 20v3M20 9h3M20 14h3M1 9h3M1 14h3"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><path d="M6 6h.01M6 18h.01"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0M1.42 9a16 16 0 0 1 21.16 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01"/></symbol>
+    <symbol id="i-tool" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="7" x2="21" y2="7"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="17" x2="21" y2="17"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  </defs>
+</svg>
+
+<canvas id="bgCanvas" aria-hidden="true"></canvas>
+
+<header class="site">
+  <nav class="nav glass" aria-label="Main">
+    <a class="brand" href="#top">
+      <span class="logo">&lt;/&gt;</span>
+      <span><b><span data-l="en">Mohammed Bekheit</span><span data-l="ar">محمد بخيت</span></b><small>COMPUTER ENGINEER</small></span>
+    </a>
+    <ul class="links">
+      <li><a href="#about"><span data-l="en">About</span><span data-l="ar">نبذة</span></a></li>
+      <li><a href="#skills"><span data-l="en">Skills</span><span data-l="ar">المهارات</span></a></li>
+      <li><a href="#projects"><span data-l="en">Projects</span><span data-l="ar">المشاريع</span></a></li>
+      <li><a href="#background"><span data-l="en">Background</span><span data-l="ar">الخلفية</span></a></li>
+      <li><a href="#contact"><span data-l="en">Contact</span><span data-l="ar">تواصل</span></a></li>
+    </ul>
+    <div class="ctls">
+      <button class="ctl" id="langBtn" type="button" aria-label="Switch language" title="Switch language"><span data-l="en">عربي</span><span data-l="ar">EN</span></button>
+      <button class="ctl sq" id="themeBtn" type="button" aria-label="Toggle light and dark mode" title="Toggle light and dark mode">
+        <svg class="ic moon" aria-hidden="true"><use href="#i-moon"/></svg><svg class="ic sun" aria-hidden="true"><use href="#i-sun"/></svg>
+      </button>
+      <button class="ctl sq" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="drawer"><svg class="ic" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
+  </nav>
+  <div class="drawer glass" id="drawer">
+    <a href="#about"><span data-l="en">About</span><span data-l="ar">نبذة</span></a>
+    <a href="#skills"><span data-l="en">Skills</span><span data-l="ar">المهارات</span></a>
+    <a href="#projects"><span data-l="en">Projects</span><span data-l="ar">المشاريع</span></a>
+    <a href="#background"><span data-l="en">Background</span><span data-l="ar">الخلفية</span></a>
+    <a href="#contact"><span data-l="en">Contact me</span><span data-l="ar">تواصل معي</span></a>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <div class="pill glass"><span class="dot"></span><span data-l="en">Open to relocation and on-site work</span><span data-l="ar">متاح للانتقال والعمل الميداني</span></div>
+        <h1>
+          <span data-l="en">Hi, I'm <span class="grad">Mohammed</span>.<br>I build</span>
+          <span data-l="ar">مرحبًا، أنا <span class="grad">محمد</span>.<br>أبني</span>
+          <span class="typed-line"><span class="grad" id="typing"></span><span class="cursor" aria-hidden="true"></span></span>
+        </h1>
+        <p class="lead">
+          <span data-l="en">A computer engineering graduate from Alexandria. I connect AI, embedded hardware, and enterprise software to solve real industrial problems.</span>
+          <span data-l="ar">خريج هندسة حاسبات من الإسكندرية. أربط بين الذكاء الاصطناعي والأجهزة المدمجة وبرمجيات المؤسسات لحل مشكلات صناعية حقيقية.</span>
+        </p>
+        <div class="actions">
+          <a class="btn primary" href="#projects"><span data-l="en">See my projects</span><span data-l="ar">تصفّح مشاريعي</span><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg></a>
+          <a class="btn" href="#contact"><span data-l="en">Get in touch</span><span data-l="ar">تواصل معي</span></a>
+        </div>
+        <div class="specs">
+          <span class="spec"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>Python &amp; TensorFlow</span>
+          <span class="spec"><svg class="ic" aria-hidden="true"><use href="#i-cpu"/></svg>ESP32 &amp; IoT</span>
+          <span class="spec"><svg class="ic" aria-hidden="true"><use href="#i-server"/></svg>C# &amp; .NET</span>
+        </div>
+      </div>
+
+      <div class="profile glass">
+        <div class="glow"></div>
+        <div class="chipbar"><span><i></i><i></i><i></i></span><span>ENGINEER_PROFILE.SYS</span></div>
+        <div class="photo">
+          <img src="images/photo.jpg" alt="Portrait of Mohammed Bekheit" width="519" height="519">
+          <div class="overlay"><span><span class="on">●</span> status: online</span><span>AgroVision · 99% acc</span></div>
+        </div>
+        <span class="float f1"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg>TensorFlow</span>
+        <span class="float f2"><svg class="ic" aria-hidden="true"><use href="#i-cpu"/></svg>ESP32</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMINAL -->
+  <section class="block" id="console" style="padding-top:8px">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-label">/// <span data-l="en">interactive console</span><span data-l="ar">سطر الأوامر التفاعلي</span></span>
+        <h2><span data-l="en">Ask my <span class="grad">terminal</span></span><span data-l="ar">اسأل <span class="grad">الـ Terminal</span></span></h2>
+        <p><span data-l="en">Type a command or tap a shortcut to learn about me the way an engineer would.</span><span data-l="ar">اكتب أمرًا أو اضغط على أحد الاختصارات لتتعرف عليّ بطريقة المهندسين.</span></p>
+      </div>
+      <div class="term">
+        <div class="term-top">
+          <div class="l"><i></i><i></i><i></i><span>mohammed@portfolio:~ (zsh)</span></div>
+          <div class="term-btns">
+            <button type="button" data-cmd="help">help</button>
+            <button type="button" data-cmd="about">about</button>
+            <button type="button" data-cmd="skills">skills</button>
+            <button type="button" data-cmd="projects">projects</button>
+            <button type="button" data-cmd="contact">contact</button>
+            <button type="button" data-cmd="clear">clear</button>
+          </div>
+        </div>
+        <div class="term-out" id="termOut" role="log" aria-live="polite" tabindex="0" aria-label="Terminal output"></div>
+        <div class="term-in">
+          <span class="pr">mohammed@portfolio:~$</span>
+          <input id="termIn" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command" placeholder="type help ...">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="block" id="about">
+    <div class="wrap">
+      <div class="about-grid">
+        <div class="about-text">
+          <span class="sec-label" style="text-align:start">/// <span data-l="en">about the engineer</span><span data-l="ar">حول المهندس</span></span>
+          <h2>
+            <span data-l="en">Connecting <span class="grad">hardware</span> with <span class="grad">intelligent software</span></span>
+            <span data-l="ar">ربط <span class="grad">العتاد</span> بـ<span class="grad">البرمجيات الذكية</span></span>
+          </h2>
+          <p><span data-l="en">I'm a computer engineering graduate who builds intelligent systems where AI, embedded hardware, and enterprise software meet, because that's where real operational problems actually get solved.</span><span data-l="ar">أنا خريج هندسة حاسبات، أبني أنظمة ذكية عند نقطة التقاء الذكاء الاصطناعي والأجهزة المدمجة وبرمجيات المؤسسات، لأن هنا تحديدًا تُحَلّ المشكلات التشغيلية الحقيقية.</span></p>
+          <p><span data-l="en">My process starts with the problem, not the technology: analyze requirements, identify real constraints, then choose the simplest approach that holds up under real conditions. AgroVision is the clearest example, and I've applied the same discipline to every project since.</span><span data-l="ar">تبدأ طريقتي من المشكلة لا من التقنية: أحلل المتطلبات، وأحدد القيود الحقيقية، ثم أختار أبسط حل يصمد في ظروف التشغيل الفعلية. مشروع AgroVision أوضح مثال على ذلك، وقد طبّقت النهج نفسه في كل مشروع بعده.</span></p>
+          <p><span data-l="en">I keep learning on purpose: not collecting credentials, but closing the specific gaps a real project just exposed.</span><span data-l="ar">أتعلّم باستمرار وبشكل مقصود، لا لجمع الشهادات، بل لسدّ الفجوات المحددة التي كشفها مشروع حقيقي.</span></p>
+        </div>
+        <div class="glass panel-pad">
+          <dl class="facts">
+            <dt><span data-l="en">Location</span><span data-l="ar">الموقع</span></dt>
+            <dd><span data-l="en">Alexandria, Egypt</span><span data-l="ar">الإسكندرية، مصر</span></dd>
+            <dt><span data-l="en">Degree</span><span data-l="ar">الدرجة العلمية</span></dt>
+            <dd><span data-l="en">B.Sc. Computer Engineering (Electrical Track), 2025</span><span data-l="ar">بكالوريوس هندسة الحاسبات (المسار الكهربي)، 2025</span></dd>
+            <dt><span data-l="en">Availability</span><span data-l="ar">التوفّر</span></dt>
+            <dd><span data-l="en">Open to relocation and on-site field work</span><span data-l="ar">متاح للانتقال والعمل الميداني</span></dd>
+            <dt><span data-l="en">Languages</span><span data-l="ar">اللغات</span></dt>
+            <dd><span data-l="en">Arabic, English</span><span data-l="ar">العربية، الإنجليزية</span></dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="pillars">
+        <div class="pillar glass hover">
+          <div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-eye"/></svg></div>
+          <h3><span data-l="en">AI-powered engineering</span><span data-l="ar">هندسة مدعومة بالذكاء الاصطناعي</span></h3>
+          <p><span data-l="en">I design computer-vision and deep-learning solutions and ship them into working products, not just notebooks.</span><span data-l="ar">أصمّم حلولًا للرؤية الحاسوبية والتعلّم العميق، وأحوّلها إلى منتجات تعمل فعلًا وليس مجرد ملفات تجريبية.</span></p>
+          <ul class="tags"><li class="tag hl">Machine Learning</li><li class="tag">Deep Learning</li><li class="tag">TensorFlow</li><li class="tag">OpenCV</li><li class="tag">Flask</li></ul>
+        </div>
+        <div class="pillar glass hover">
+          <div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-cpu"/></svg></div>
+          <h3><span data-l="en">Embedded &amp; IoT systems</span><span data-l="ar">الأنظمة المدمجة وإنترنت الأشياء</span></h3>
+          <p><span data-l="en">I integrate sensors, microcontrollers, and communication protocols into reliable, field-tested hardware.</span><span data-l="ar">أدمج الحساسات والمتحكمات وبروتوكولات الاتصال في أجهزة موثوقة تم اختبارها ميدانيًا.</span></p>
+          <ul class="tags"><li class="tag hl">ESP32</li><li class="tag">Arduino</li><li class="tag">Raspberry Pi</li><li class="tag">UART / SPI / I²C</li><li class="tag">MQTT</li></ul>
+        </div>
+        <div class="pillar glass hover">
+          <div class="ico"><svg class="ic" aria-hidden="true"><use href="#i-server"/></svg></div>
+          <h3><span data-l="en">Enterprise software</span><span data-l="ar">برمجيات المؤسسات</span></h3>
+          <p><span data-l="en">I build scalable backend systems with clean architecture and production-grade .NET practices.</span><span data-l="ar">أبني أنظمة خلفية قابلة للتوسع بمعمارية نظيفة وممارسات .NET احترافية.</span></p>
+          <ul class="tags"><li class="tag hl">C#</li><li class="tag">.NET</li><li class="tag">ASP.NET Core</li><li class="tag">EF Core</li><li class="tag">SQL Server</li></ul>
+        </div>
+      </div>
+
+      <blockquote class="quote">
+        <span data-l="en">Great engineering isn't about using more technology. It's about choosing the right technology to solve the right problem.</span>
+        <span data-l="ar">الهندسة الجيدة لا تعني استخدام تقنيات أكثر، بل اختيار التقنية المناسبة لحل المشكلة المناسبة.</span>
+      </blockquote>
+      <div class="principles">
+        <div>
+          <h3><span data-l="en">Think before building</span><span data-l="ar">أفكّر قبل أن أبني</span></h3>
+          <p><span data-l="en">Every solution starts with the real problem, not the newest tool. I analyze requirements and constraints before writing a line of code.</span><span data-l="ar">كل حل يبدأ من المشكلة الحقيقية لا من أحدث أداة. أحلل المتطلبات والقيود قبل كتابة أي سطر برمجي.</span></p>
+        </div>
+        <div>
+          <h3><span data-l="en">Engineer with purpose</span><span data-l="ar">أهندس بهدف</span></h3>
+          <p><span data-l="en">Clean architecture, modular design, and continuous refactoring: systems built to be maintained, not just demoed.</span><span data-l="ar">معمارية نظيفة وتصميم معياري وإعادة هيكلة مستمرة: أنظمة تُبنى لتُصان، لا لتُعرض فقط.</span></p>
+        </div>
+        <div>
+          <h3><span data-l="en">Learn through building</span><span data-l="ar">أتعلّم بالبناء</span></h3>
+          <p><span data-l="en">Every project is a deliberate stress test of a specific skill gap, turning new knowledge into field-tested experience.</span><span data-l="ar">كل مشروع اختبار مقصود لفجوة مهارية محددة، يحوّل المعرفة الجديدة إلى خبرة مجرَّبة.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="block" id="skills">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-label">/// <span data-l="en">skills and tools</span><span data-l="ar">المهارات والأدوات</span></span>
+        <h2><span data-l="en">My technical <span class="grad">skills matrix</span></span><span data-l="ar">مصفوفة <span class="grad">مهاراتي التقنية</span></span></h2>
+        <p><span data-l="en">Pick a category to see what I work with.</span><span data-l="ar">اختر تصنيفًا لتعرف ما أعمل به.</span></p>
+      </div>
+
+      <div class="tabs" role="tablist" aria-label="Skill categories" id="skillTabs"></div>
+      <div id="skillPanels"></div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="block" id="projects">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-label">/// <span data-l="en">selected work</span><span data-l="ar">أبرز الأعمال</span></span>
+        <h2><span data-l="en">Featured <span class="grad">projects</span></span><span data-l="ar">أبرز <span class="grad">المشاريع</span></span></h2>
+        <p><span data-l="en">From a 12-person graduation platform to small hardware builds.</span><span data-l="ar">من منصة تخرج بفريق من 12 شخصًا إلى مشاريع عتاد صغيرة.</span></p>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Project filters"></div>
+
+      <div class="grid" id="projectsGrid"></div>
+    </div>
+  </section>
+
+  <!-- CASE STUDY -->
+  <section class="block" id="agrovision">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-label">/// <span data-l="en">case study</span><span data-l="ar">دراسة حالة</span></span>
+        <h2><span class="grad">AgroVision</span></h2>
+        <p><span data-l="en">AI-powered smart agriculture platform · graduation project · 12-member team · completed June 2025</span><span data-l="ar">منصة زراعة ذكية بالذكاء الاصطناعي · مشروع تخرج · فريق من 12 عضوًا · اكتمل في يونيو 2025</span></p>
+      </div>
+
+      <p class="intro"><span data-l="en">An AI and IoT platform for precision agriculture. It combines computer vision, sensing, and cloud infrastructure to give farmers real-time crop-health visibility and disease detection, replacing reactive guesswork with data.</span><span data-l="ar">منصة ذكاء اصطناعي وإنترنت أشياء للزراعة الدقيقة. تجمع بين الرؤية الحاسوبية والاستشعار والبنية السحابية لتمنح المزارعين رؤية فورية لصحة المحاصيل وكشفًا مبكرًا للأمراض، بدل التخمين ورد الفعل المتأخر.</span></p>
+
+      <div class="stats">
+        <div class="stat glass"><b class="grad">8</b><span><span data-l="en">soil parameters sensed: N-P-K, pH, EC, moisture, temperature, fertility</span><span data-l="ar">معاملات للتربة يتم استشعارها: N-P-K، وpH، وEC، والرطوبة، والحرارة، والخصوبة</span></span></div>
+        <div class="stat glass"><b class="grad">3</b><span><span data-l="en">disease-classification models shipped: tomato, potato, and plant ID</span><span data-l="ar">نماذج لتصنيف الأمراض تم تسليمها: الطماطم والبطاطس وتعريف النبات</span></span></div>
+        <div class="stat glass"><b class="grad" dir="ltr">95–99%</b><span><span data-l="en">validation accuracy across those three models</span><span data-l="ar">دقة تحقق عبر النماذج الثلاثة</span></span></div>
+      </div>
+
+      <div class="glass case-facts">
+        <dl class="facts">
+          <dt><span data-l="en">The problem</span><span data-l="ar">المشكلة</span></dt>
+          <dd><span data-l="en">Agricultural decision-making is reactive rather than data-driven, which delays disease detection and wastes resources.</span><span data-l="ar">القرارات الزراعية تعتمد على رد الفعل لا على البيانات، ما يؤخر اكتشاف الأمراض ويهدر الموارد.</span></dd>
+          <dt><span data-l="en">My contribution</span><span data-l="ar">مساهمتي</span></dt>
+          <dd><span data-l="en">I led AI development: dataset preparation, model training, evaluation, and optimization for the disease-classification models. I also supported IoT hardware integration and testing.</span><span data-l="ar">قدتُ تطوير الذكاء الاصطناعي: تجهيز البيانات وتدريب النماذج وتقييمها وتحسينها لنماذج تصنيف الأمراض، وساهمت أيضًا في دمج واختبار عتاد إنترنت الأشياء.</span></dd>
+          <dt><span data-l="en">Team</span><span data-l="ar">الفريق</span></dt>
+          <dd><span data-l="en">12-member graduation team, supervised by Dr. Ahmed El-Shaer</span><span data-l="ar">فريق تخرج من 12 عضوًا، بإشراف Dr. Ahmed El-Shaer</span></dd>
+        </dl>
+      </div>
+
+      <h3 class="sub"><span data-l="en">How the system is built</span><span data-l="ar">كيف بُني النظام</span></h3>
+      <figure class="diagram glass">
+        <img src="images/diagram.jpg" alt="AgroVision system architecture showing the IoT, backend, frontend and AI layers" width="1734" height="691" loading="lazy">
+        <figcaption><span data-l="en">System architecture: IoT, backend, frontend, and AI layers.</span><span data-l="ar">معمارية النظام: طبقات إنترنت الأشياء والخادم والواجهة والذكاء الاصطناعي.</span></figcaption>
+      </figure>
+      <div class="layers">
+        <div class="layer glass">
+          <h4><span data-l="en">IoT layer</span><span data-l="ar">طبقة إنترنت الأشياء</span></h4>
+          <p><span data-l="en">8-in-1 soil sensor, then Raspberry Pi 3 for edge processing, then ESP32 for irrigation control, then Firebase cloud sync, with automated water-pump actuation.</span><span data-l="ar">حساس تربة 8 في 1، ثم Raspberry Pi 3 للمعالجة على الحافة، ثم ESP32 للتحكم في الري، ثم مزامنة سحابية عبر Firebase، مع تشغيل تلقائي لمضخة المياه.</span></p>
+        </div>
+        <div class="layer glass">
+          <h4><span data-l="en">Backend layer</span><span data-l="ar">طبقة الخادم</span></h4>
+          <p><span data-l="en">SQL database and application server handling business logic, workflows, and communication between components.</span><span data-l="ar">قاعدة بيانات SQL وخادم تطبيقات يتولّيان منطق العمل وسير العمليات والتواصل بين المكونات.</span></p>
+        </div>
+        <div class="layer glass">
+          <h4><span data-l="en">AI layer</span><span data-l="ar">طبقة الذكاء الاصطناعي</span></h4>
+          <p><span data-l="en">Pre-trained TensorFlow disease-classification models served through FastAPI, plus “Khedr,” a Gemini-powered chatbot on a Dockerized local server.</span><span data-l="ar">نماذج TensorFlow مدرَّبة لتصنيف الأمراض تُقدَّم عبر FastAPI، إضافة إلى «Khedr»، مساعد محادثة يعمل بـ Gemini على خادم محلي داخل Docker.</span></p>
+        </div>
+        <div class="layer glass">
+          <h4><span data-l="en">Frontend layer</span><span data-l="ar">طبقة الواجهات</span></h4>
+          <p><span data-l="en">React.js web dashboard and Flutter mobile app for real-time monitoring, alerts, and farmer-facing insights.</span><span data-l="ar">لوحة تحكم ويب بـ React.js وتطبيق موبايل بـ Flutter للمراقبة الفورية والتنبيهات ومعلومات موجّهة للمزارع.</span></p>
+        </div>
+      </div>
+
+      <h3 class="sub"><span data-l="en">Model performance</span><span data-l="ar">أداء النماذج</span></h3>
+      <div class="table-wrap glass">
+        <table>
+          <thead>
+            <tr>
+              <th><span data-l="en">Model</span><span data-l="ar">النموذج</span></th>
+              <th><span data-l="en">Accuracy</span><span data-l="ar">الدقة</span></th>
+              <th><span data-l="en">F1 score</span><span data-l="ar">F1</span></th>
+              <th><span data-l="en">Loss</span><span data-l="ar">الخسارة</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span data-l="en">Tomato disease</span><span data-l="ar">أمراض الطماطم</span></td><td class="num">95%</td><td class="num">96%</td><td class="num">0.10</td></tr>
+            <tr><td><span data-l="en">Potato disease</span><span data-l="ar">أمراض البطاطس</span></td><td class="num best">99%</td><td class="num best">99%</td><td class="num best">0.01</td></tr>
+            <tr><td><span data-l="en">Plant identification</span><span data-l="ar">تعريف النبات</span></td><td class="num">95%</td><td class="num">96%</td><td class="num">0.10</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note"><span data-l="en">Trained on labeled leaf-image datasets per crop and evaluated with confusion matrices on held-out validation splits.</span><span data-l="ar">دُرِّبت على مجموعات صور أوراق مصنّفة لكل محصول، وتم تقييمها بمصفوفات الالتباس على بيانات تحقق مستقلة.</span></p>
+
+      <h3 class="sub"><span data-l="en">Key engineering decisions</span><span data-l="ar">أهم القرارات الهندسية</span></h3>
+      <ul class="decisions">
+        <li><span data-l="en">Split disease classification into three focused models (tomato, potato, general plant ID) instead of one general model, which pushed validation accuracy into the high 90s on each.</span><span data-l="ar">قسّمت تصنيف الأمراض إلى ثلاثة نماذج متخصصة (طماطم، بطاطس، تعريف نبات عام) بدل نموذج واحد شامل، فارتفعت دقة التحقق إلى التسعينات المرتفعة في كل منها.</span></li>
+        <li><span data-l="en">Served inference through a Dockerized FastAPI service, decoupling the AI layer from the main backend so it can scale independently.</span><span data-l="ar">قدّمتُ الاستدلال عبر خدمة FastAPI داخل Docker، لفصل طبقة الذكاء الاصطناعي عن الخادم الرئيسي لتتوسع باستقلالية.</span></li>
+        <li><span data-l="en">Pre-processed data at the edge on the Raspberry Pi before cloud transmission, which cuts network load and keeps the system usable on unreliable rural connections.</span><span data-l="ar">عالجتُ البيانات على الحافة داخل Raspberry Pi قبل إرسالها إلى السحابة، ما يقلل الحمل على الشبكة ويُبقي النظام صالحًا للعمل مع ضعف الاتصال في الريف.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- BACKGROUND -->
+  <section class="block" id="background">
+    <div class="wrap">
+      <div class="sec-head">
+        <span class="sec-label">/// <span data-l="en">background</span><span data-l="ar">الخلفية</span></span>
+        <h2><span data-l="en">Education and <span class="grad">how I got here</span></span><span data-l="ar">التعليم و<span class="grad">رحلتي حتى الآن</span></span></h2>
+      </div>
+      <div class="bg-grid">
+        <div class="glass">
+          <h3 class="col"><span data-l="en">Education and certifications</span><span data-l="ar">التعليم والشهادات</span></h3>
+          <div class="edu">
+            <span class="yrs">2020 – 2025</span>
+            <h4><span data-l="en">Bachelor of Computer Engineering, Electrical Track</span><span data-l="ar">بكالوريوس هندسة الحاسبات، المسار الكهربي</span></h4>
+            <p class="org"><span data-l="en">High Institute of Engineering and Technology, Beheira</span><span data-l="ar">المعهد العالي للهندسة والتكنولوجيا، البحيرة</span></p>
+            <p class="small"><span data-l="en">Core coursework: Embedded Systems, Control Systems, Microprocessors, Sensors &amp; Measurements. Graduation project: AgroVision.</span><span data-l="ar">أبرز المقررات: الأنظمة المدمجة، أنظمة التحكم، المعالجات الدقيقة، الحساسات والقياسات. مشروع التخرج: AgroVision.</span></p>
+          </div>
+          <ul class="certs" id="certList"></ul>
+        </div>
+
+        <div class="glass">
+          <h3 class="col"><span data-l="en">How I got here</span><span data-l="ar">كيف وصلت إلى هنا</span></h3>
+          <ol class="timeline" id="timeline"></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="block" id="contact">
+    <div class="wrap">
+      <div class="contact-card glass">
+        <span class="sec-label">/// <span data-l="en">get in touch</span><span data-l="ar">تواصل معي</span></span>
+        <h2 style="margin:4px 0 12px;font-size:clamp(1.7rem,3.6vw,2.5rem);font-weight:900;line-height:1.3"><span data-l="en">Let's build something <span class="grad">that works</span></span><span data-l="ar">لنبنِ معًا شيئًا <span class="grad">يعمل فعلًا</span></span></h2>
+        <p class="lead"><span data-l="en">I'm building toward a career leading projects that combine AI, embedded systems, and IoT to solve industrial-scale problems, on teams doing work with measurable real-world impact. If that sounds like your team, I'd like to talk.</span><span data-l="ar">أعمل على بناء مسار مهني أقود فيه مشاريع تجمع بين الذكاء الاصطناعي والأنظمة المدمجة وإنترنت الأشياء لحل مشكلات على النطاق الصناعي، ضمن فرق ينتج عملها أثرًا حقيقيًا يمكن قياسه. إن كان هذا يشبه فريقك، يسعدني أن نتحدث.</span></p>
+
+        <div class="mailrow">
+          <a class="mail" href="#" id="mailLink"></a>
+          <button class="btn copy" id="copyBtn" type="button"><svg class="ic" aria-hidden="true"><use href="#i-copy"/></svg><span id="copyLabel"><span data-l="en">Copy email</span><span data-l="ar">نسخ البريد</span></span></button>
+        </div>
+
+        <div class="tiles" id="tiles"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <span>&copy; <span id="year">2026</span> <span data-l="en">Mohammed Bekheit</span><span data-l="ar">محمد بخيت</span></span>
+    <span class="q"><span data-l="en">Learning never stops. Building never ends.</span><span data-l="ar">التعلّم لا يتوقف. والبناء لا ينتهي.</span></span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
